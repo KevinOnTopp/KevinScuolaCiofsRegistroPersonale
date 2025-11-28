@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kevin - Ciofs</title>
+<style>
+:root {
+  --bg: #f7fbff;
+  --bg-card: #ffffff;
+  --accent: #8cbcff;
+  --accent-soft: #d6e7ff;
+  --text: #111827;
+  --text-soft: #6b7280;
+  --danger: #ef4444;
+}
+
+body.dark {
+  --bg: #020617;
+  --bg-card: #020617;
+  --accent: #60a5fa;
+  --accent-soft: #1d4ed8;
+  --text: #e5e7eb;
+  --text-soft: #9ca3af;
+  --danger: #f97373;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Akrobat, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding-bottom: 64px;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* HEADER */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 12px 16px;
+  background: rgba(230, 242, 255, 0.9);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+body.dark header {
+  background: rgba(15, 23, 42, 0.92);
+}
+
+header .title {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+header .subtitle {
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  font-size: 11px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+/* Pagine */
+.page {
+  display: none;
+  padding: 16px 16px 24px;
+  animation: slideIn 0.25s ease forwards;
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.page.active {
+  display: block;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* CARD */
+.card {
+  background: var(--bg-card);
+  padding: 12px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  animation: floatIn 0.25s ease;
+}
+
+@keyframes floatIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.card-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.card-sub {
+  font-size: 12px;
+  color: var(--text-soft);
+  margin-bottom: 8px;
+}
+
+/* INPUTS */
+input, textarea, select, button {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  font-size: 13px;
+  background: rgba(248, 250, 252, 0.9);
+  color: var(--text);
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, transform 0.1s ease;
+}
+
+textarea {
+  border-radius: 14px;
+  resize: vertical;
+  min-height: 90px;
+}
+
+body.dark input,
+body.dark textarea,
+body.dark select {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.3);
+}
+
+/* BUTTONS */
+button {
+  background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+  border: none;
+  color: #0f172a;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.3);
+}
+
+button:active {
+  transform: scale(0.97) translateY(1px);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4);
+}
+
+button.text-btn {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 999px;
+  border: 1px dashed rgba(148, 163, 184, 0.8);
+  color: var(--text-soft);
+}
+
+/* TAG / PILL */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--text-soft);
+}
+
+/* Lista voti */
+.voto-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(248, 250, 252, 0.9);
+  margin-bottom: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+body.dark .voto-card {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.voto-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.28);
+}
+
+.voto-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.voto-materia {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.voto-info {
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+.voto-badge {
+  min-width: 54px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 0;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.12);
+}
+
+.voto-badge.bad {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+.voto-actions button {
+  width: auto;
+  padding-inline: 8px;
+  font-size: 11px;
+  box-shadow: none;
+  background: transparent;
+  color: var(--text-soft);
+}
+
+/* Navbar in basso */
+.navbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  background: rgba(15, 23, 42, 0.03);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(148, 163, 184, 0.5);
+  z-index: 10;
+}
+
+body.dark .navbar {
+  background: rgba(15, 23, 42, 0.92);
+}
+
+.nav-item {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 6px 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-soft);
+  cursor: pointer;
+  gap: 2px;
+  position: relative;
+}
+
+.nav-item span {
+  font-size: 16px;
+}
+
+.nav-item.active {
+  color: var(--accent);
+}
+
+.nav-indicator {
+  position: absolute;
+  bottom: 2px;
+  height: 3px;
+  width: 40%;
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: 0;
+  transform: scaleX(0.3);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.nav-item.active .nav-indicator {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Lock screen / PIN */
+.lock-screen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, #1d4ed8 0, #020617 50%, #000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  color: #e5e7eb;
+}
+
+.lock-card {
+  width: 90%;
+  max-width: 360px;
+  background: rgba(15, 23, 42, 0.96);
+  border-radius: 20px;
+  padding: 18px 16px 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  animation: popIn 0.3s ease;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.lock-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.lock-sub {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 10px;
+}
+
+.pin-input {
+  letter-spacing: 4px;
+  text-align: center;
+}
+
+.lock-error {
+  font-size: 11px;
+  color: #f97373;
+  min-height: 14px;
+  margin-top: 4px;
+}
+
+/* Tema switch */
+.switch {
+  position: relative;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(148, 163, 184, 0.7);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  top: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.25s;
+}
+
+input:checked + .slider {
+  background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+  transform: translateX(18px);
+}
+
+/* Grafico */
+.chart-wrapper {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px dashed rgba(148, 163, 184, 0.7);
+}
+
+body.dark .chart-wrapper {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+/* Home tiles */
+.home-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.home-tile {
+  border-radius: 14px;
+  padding: 8px;
+  background: rgba(248, 250, 252, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  font-size: 11px;
+}
+
+body.dark .home-tile {
+  background: rgba(15, 23, 42, 0.95);
+}
+
+/* List presenze */
+.pres-item {
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(148,163,184,0.5);
+  margin-bottom: 6px;
+  font-size: 12px;
+  background: rgba(248,250,252,0.95);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+body.dark .pres-item {
+  background: rgba(15,23,42,0.95);
+}
+
+.pres-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pres-data {
+  font-weight: 600;
+}
+
+.pres-motivo {
+  color: var(--text-soft);
+  font-size: 11px;
+}
+
+.pres-actions button {
+  width: auto;
+  padding-inline: 8px;
+  font-size: 10px;
+  box-shadow: none;
+  background: transparent;
+  color: var(--text-soft);
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  body {
+    max-width: 480px;
+    margin: 0 auto;
+    border-left: 1px solid rgba(148, 163, 184, 0.3);
+    border-right: 1px solid rgba(148, 163, 184, 0.3);
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- LOCK / PIN -->
+<div id="lockScreen" class="lock-screen">
+  <div class="lock-card">
+    <div class="lock-title" id="lockTitle">Imposta un PIN</div>
+    <div class="lock-sub" id="lockSub">
+      Questo PIN serve solo per non far aprì l’app a chi mette le mani sul telefono/PC.
+    </div>
+    <input
+  id="pinInput"
+  class="pin-input"
+  type="password"
+  maxlength="8"
+  placeholder="••••"
+  inputmode="numeric"
+  pattern="[0-9]*"
+/>
+    <div class="lock-error" id="lockError"></div>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button id="lockBtn"></button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div>
+    <div class="title">Kevin - Ciofs</div>
+    <div class="subtitle" id="pageSubtitle">Riepilogo</div>
+  </div>
+  <div class="header-right">
+    <div class="chip" id="todaySummary"></div>
+    <label class="switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="card">
+    <div class="card-title">Panoramica</div>
+    <div class="card-sub">Situazione generale di voti e presenze.</div>
+    <div class="home-tiles" id="homeTiles"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Ultimi voti</div>
+    <div id="homeToday"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Voti sotto la sufficienza</div>
+    <div id="homeInsufficienti"></div>
+  </div>
+</div>
+
+<!-- VOTI -->
+<div id="voti" class="page">
+  <div class="card">
+    <div class="card-title">Aggiungi voto (0–30)</div>
+    <div class="card-sub">Seleziona materia, quadrimestre e inserisci il voto in trentesimi.</div>
+    <select id="materiaSelect">
+      <option value="">Scegli materia</option>
+    </select>
+    <input id="votoValore" type="number" step="1" min="0" max="30" placeholder="Voto (es. 24)">
+    <select id="votoQuad">
+      <option value="Primo">Primo quadrimestre</option>
+      <option value="Secondo">Secondo quadrimestre</option>
+    </select>
+    <button type="button" onclick="addVoto()" style="margin-top:8px;">Salva voto</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Voti inseriti</div>
+    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+      <span style="font-size:12px;">Filtro quadrimestre:</span>
+      <select id="filtroQuad" onchange="aggiornaVoti(); aggiornaMedie(); aggiornaHome();">
+        <option value="Tutti">Tutti</option>
+        <option value="Primo">Primo</option>
+        <option value="Secondo">Secondo</option>
+      </select>
+    </div>
+    <div id="listaVoti"></div>
+    <button class="text-btn" type="button" onclick="svuotaVoti()">Svuota tutti i voti</button>
+  </div>
+</div>
+
+<!-- MEDIE -->
+<div id="medie" class="page">
+  <div class="card">
+    <div class="card-title">Medie per materia (0–30)</div>
+    <div class="card-sub">Valori calcolati sui voti inseriti (rispettando il filtro quadrimestre).</div>
+    <div id="medieBox"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Media generale 1º vs 2º</div>
+    <div class="card-sub">Media complessiva dei due quadrimestri.</div>
+    <div class="chart-wrapper">
+      <canvas id="graficoQuadr" width="320" height="160"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- PRESENZE -->
+<div id="presenze" class="page">
+  <div class="card">
+    <div class="card-title">Assenze</div>
+    <div class="card-sub">Registra ogni assenza con data e motivo.</div>
+    <div style="display:flex; gap:8px; margin-bottom:6px;">
+      <button type="button" onclick="openAssenzaForm(false)">Aggiungi assenza</button>
+      <button type="button" onclick="openAssenzaForm(true)">Oggi</button>
+    </div>
+    <div id="assenzaForm" style="display:none; margin-bottom:8px;">
+      <input id="assenzaData" type="date">
+      <input id="assenzaMotivo" placeholder="Motivo (opzionale)">
+      <div style="display:flex; gap:8px; margin-top:6px;">
+        <button type="button" onclick="salvaAssenza()">Salva</button>
+        <button type="button" class="text-btn" onclick="chiudiAssenzaForm()">Annulla</button>
+      </div>
+    </div>
+    <div id="assenzeList"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Entrate in seconda</div>
+    <div class="card-sub">Registra le volte che entri alla seconda ora.</div>
+    <div style="display:flex; gap:8px; margin-bottom:6px;">
+      <button type="button" onclick="openRitardoForm(false)">Aggiungi entrata</button>
+      <button type="button" onclick="openRitardoForm(true)">Oggi</button>
+    </div>
+    <div id="ritardoForm" style="display:none; margin-bottom:8px;">
+      <input id="ritardoData" type="date">
+      <input id="ritardoMotivo" placeholder="Motivo (opzionale)">
+      <div style="display:flex; gap:8px; margin-top:6px;">
+        <button type="button" onclick="salvaRitardo()">Salva</button>
+        <button type="button" class="text-btn" onclick="chiudiRitardoForm()">Annulla</button>
+      </div>
+    </div>
+    <div id="ritardiList"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Riepilogo</div>
+    <div id="presenzeShow"></div>
+  </div>
+</div>
+
+<!-- INFO / NOTE PRIVATE -->
+<div id="info" class="page">
+  <div class="card">
+    <div class="card-title">Note personali</div>
+    <div class="card-sub">
+      Appunti privati solo per te, salvati in locale sul dispositivo.
+    </div>
+    <textarea id="note" rows="6" placeholder="Scrivi qui le tue note, promemoria, obiettivi, ecc."></textarea>
+    <button type="button" onclick="salvaNote()" style="margin-top:8px;">Salva note</button>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <button class="nav-item active" data-target="home" onclick="show('home', this)">
+    <span>🏠</span>
+    Home
+    <div class="nav-indicator"></div>
+  </button>
+  <button class="nav-item" data-target="voti" onclick="show('voti', this)">
+    <span>📚</span>
+    Voti
+    <div class="nav-indicator"></div>
+  </button>
+  <button class="nav-item" data-target="medie" onclick="show('medie', this)">
+    <span>🧮</span>
+    Medie
+    <div class="nav-indicator"></div>
+  </button>
+  <button class="nav-item" data-target="presenze" onclick="show('presenze', this)">
+    <span>⏰</span>
+    Presenze
+    <div class="nav-indicator"></div>
+  </button>
+  <button class="nav-item" data-target="info" onclick="show('info', this)">
+    <span>👤</span>
+    Info
+    <div class="nav-indicator"></div>
+  </button>
+</div>
+
+<script>
+/* ======= QUI METTI LE TUE MATERIE ======= */
+const MATERIE = [
+  "Italiano",
+  "Storia",
+  "Matematica",
+  "Accoglienza",
+  "Inglese",
+  "Scienze",
+  "Religione",
+  "Economia",
+  "Sicurezza del Lavoratore",
+  "Data Management",
+  "Reti e Sistemi",
+  "Programmazione Informatica",
+  "Elettronica e Telecomunicazioni"
+];
+
+/* ======= DATI IN LOCALE ======= */
+let voti = JSON.parse(localStorage.getItem("voti30") || "[]");
+let tema = localStorage.getItem("tema") || "light";
+let assenzeList = JSON.parse(localStorage.getItem("assenze_list") || "[]");
+let ritardiList = JSON.parse(localStorage.getItem("ritardi_list") || "[]");
+
+/* ======= TEMA SCURO / CHIARO ======= */
+const themeToggle = document.getElementById("themeToggle");
+function applicaTema() {
+  if (tema === "dark") {
+    document.body.classList.add("dark");
+    themeToggle.checked = true;
+  } else {
+    document.body.classList.remove("dark");
+    themeToggle.checked = false;
+  }
+}
+themeToggle.addEventListener("change", () => {
+  tema = themeToggle.checked ? "dark" : "light";
+  localStorage.setItem("tema", tema);
+  applicaTema();
+});
+
+/* ======= NAVIGAZIONE ======= */
+function show(id, btn) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+
+  const pageSubtitle = document.getElementById("pageSubtitle");
+  if (id === "home") pageSubtitle.textContent = "Riepilogo stile registro";
+  if (id === "voti") pageSubtitle.textContent = "Gestisci voti e materie";
+  if (id === "medie") pageSubtitle.textContent = "Medie per materia e per quadrimestre";
+  if (id === "presenze") pageSubtitle.textContent = "Assenze e entrate in seconda";
+  if (id === "info") pageSubtitle.textContent = "Spazio per le tue note private";
+
+  aggiornaVoti();
+  aggiornaMedie();
+  aggiornaHome();
+  aggiornaPresenze();
+}
+
+/* ======= MATERIE → SELECT ======= */
+const materiaSelect = document.getElementById("materiaSelect");
+function aggiornaMaterieUI() {
+  materiaSelect.innerHTML = '<option value="">Scegli materia</option>';
+  MATERIE.forEach(m => {
+    const opt = document.createElement("option");
+    opt.value = m;
+    opt.textContent = m;
+    materiaSelect.appendChild(opt);
+  });
+}
+
+/* ======= VOTI (0–30) ======= */
+const listaVoti = document.getElementById("listaVoti");
+const votoValore = document.getElementById("votoValore");
+const votoQuad = document.getElementById("votoQuad");
+const filtroQuad = document.getElementById("filtroQuad");
+
+function salvaVoti() {
+  localStorage.setItem("voti30", JSON.stringify(voti));
+}
+
+function addVoto() {
+  const materia = materiaSelect.value;
+  const valore = parseInt(votoValore.value, 10);
+  const quad = votoQuad.value;
+
+  if (!materia || isNaN(valore) || valore < 0 || valore > 30) return;
+
+  voti.push({
+    id: Date.now().toString(),
+    m: materia,
+    v: valore,
+    q: quad
+  });
+
+  salvaVoti();
+  votoValore.value = "";
+  aggiornaVoti();
+  aggiornaMedie();
+  aggiornaHome();
+}
+
+function eliminaVoto(id) {
+  voti = voti.filter(v => v.id !== id);
+  salvaVoti();
+  aggiornaVoti();
+  aggiornaMedie();
+  aggiornaHome();
+}
+
+function svuotaVoti() {
+  if (!confirm("Sicuro di voler eliminare tutti i voti?")) return;
+  voti = [];
+  salvaVoti();
+  aggiornaVoti();
+  aggiornaMedie();
+  aggiornaHome();
+}
+
+function filtraPerQuad(lista) {
+  const f = filtroQuad.value;
+  if (f === "Tutti") return lista;
+  return lista.filter(v => v.q === f);
+}
+
+function aggiornaVoti() {
+  const vFiltrati = filtraPerQuad(voti);
+  if (vFiltrati.length === 0) {
+    listaVoti.innerHTML = '<div class="card-sub">Nessun voto inserito per questo filtro.</div>';
+    return;
+  }
+  listaVoti.innerHTML = vFiltrati.map(v => {
+    const qLabel = v.q === "Primo" ? "1º" : "2º";
+    const insuff = v.v < 18;
+    return `
+      <div class="voto-card">
+        <div class="voto-main">
+          <div class="voto-materia">${v.m}</div>
+          <div class="voto-info">Quadrimestre: ${qLabel}</div>
+        </div>
+        <div class="voto-badge ${insuff ? 'bad' : ''}">${v.v}/30</div>
+        <div class="voto-actions">
+          <button type="button" onclick="eliminaVoto('${v.id}')">✕</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+/* ======= MEDIE & GRAFICO (0–30) ======= */
+const medieBox = document.getElementById("medieBox");
+const canvas = document.getElementById("graficoQuadr");
+const ctx = canvas.getContext("2d");
+
+function calcolaMediePerMateria(lista) {
+  const perMateria = {};
+  lista.forEach(v => {
+    if (!perMateria[v.m]) perMateria[v.m] = [];
+    perMateria[v.m].push(v.v);
+  });
+  return perMateria;
+}
+
+function aggiornaMedie() {
+  const vFiltrati = filtraPerQuad(voti);
+  const perMateria = calcolaMediePerMateria(vFiltrati);
+  const entries = Object.entries(perMateria);
+
+  if (entries.length === 0) {
+    medieBox.innerHTML = '<div class="card-sub">Nessuna media da mostrare con questo filtro.</div>';
+  } else {
+    medieBox.innerHTML = entries.map(([m, arr]) => {
+      const media = (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1);
+      return `<div class="voto-info" style="margin-bottom:4px;"><strong>${m}</strong>: ${media}/30</div>`;
+    }).join("");
+  }
+
+  disegnaGraficoQuadr();
+}
+
+function disegnaGraficoQuadr() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const primo = voti.filter(v => v.q === "Primo").map(v => v.v);
+  const secondo = voti.filter(v => v.q === "Secondo").map(v => v.v);
+
+  const mediaPrimo = primo.length ? primo.reduce((a,b)=>a+b,0)/primo.length : 0;
+  const mediaSecondo = secondo.length ? secondo.reduce((a,b)=>a+b,0)/secondo.length : 0;
+
+  const maxVal = 30;
+  const padding = 30;
+  const baseY = canvas.height - padding;
+  const barWidth = 60;
+  const gap = 40;
+  const startX = (canvas.width - (barWidth * 2 + gap)) / 2;
+
+  ctx.fillStyle = "rgba(148,163,184,0.06)";
+  ctx.fillRect(padding, padding, canvas.width - padding * 2, baseY - padding);
+
+  ctx.strokeStyle = "rgba(148,163,184,0.8)";
+  ctx.beginPath();
+  ctx.moveTo(padding, baseY);
+  ctx.lineTo(canvas.width - padding, baseY);
+  ctx.stroke();
+
+  function drawBar(x, media, color, label) {
+    const targetHeight = (media / maxVal) * (canvas.height - padding * 2);
+    let h = 0;
+    const step = targetHeight / 18;
+
+    function anim() {
+      ctx.clearRect(x, 0, barWidth, baseY);
+      ctx.strokeStyle = "rgba(148,163,184,0.8)";
+      ctx.beginPath();
+      ctx.moveTo(padding, baseY);
+      ctx.lineTo(canvas.width - padding, baseY);
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(148,163,184,0.06)";
+      ctx.fillRect(padding, padding, canvas.width - padding * 2, baseY - padding);
+
+      h = Math.min(h + step, targetHeight);
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.roundRect(x, baseY - h, barWidth, h, 10);
+      ctx.fill();
+
+      ctx.fillStyle = "#9ca3af";
+      ctx.font = "11px system-ui";
+      ctx.textAlign = "center";
+      ctx.fillText(label, x + barWidth / 2, baseY + 14);
+      if (media > 0) {
+        ctx.fillText(media.toFixed(1) + "/30", x + barWidth / 2, baseY - h - 6);
+      }
+
+      if (h < targetHeight - 0.5) {
+        requestAnimationFrame(anim);
+      }
+    }
+    anim();
+  }
+
+  drawBar(startX, mediaPrimo, "rgba(96,165,250,0.9)", "1º");
+  drawBar(startX + barWidth + gap, mediaSecondo, "rgba(59,130,246,0.9)", "2º");
+}
+
+/* ======= PRESENZE CON LISTE ======= */
+const assenzeListEl = document.getElementById("assenzeList");
+const ritardiListEl = document.getElementById("ritardiList");
+const presenzeShow = document.getElementById("presenzeShow");
+const assenzaForm = document.getElementById("assenzaForm");
+const assenzaData = document.getElementById("assenzaData");
+const assenzaMotivo = document.getElementById("assenzaMotivo");
+const ritardoForm = document.getElementById("ritardoForm");
+const ritardoData = document.getElementById("ritardoData");
+const ritardoMotivo = document.getElementById("ritardoMotivo");
+
+function todayISO() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+
+function formatITA(iso) {
+  if (!iso) return "";
+  const [y,m,d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+
+function saveAssenze() {
+  localStorage.setItem("assenze_list", JSON.stringify(assenzeList));
+}
+
+function saveRitardi() {
+  localStorage.setItem("ritardi_list", JSON.stringify(ritardiList));
+}
+
+function openAssenzaForm(today) {
+  assenzaForm.style.display = "block";
+  assenzaMotivo.value = "";
+  assenzaData.value = today ? todayISO() : "";
+}
+
+function chiudiAssenzaForm() {
+  assenzaForm.style.display = "none";
+}
+
+function salvaAssenza() {
+  const data = assenzaData.value;
+  const motivo = assenzaMotivo.value.trim();
+  if (!data) return;
+  assenzeList.push({
+    id: Date.now().toString(),
+    data,
+    motivo
+  });
+  saveAssenze();
+  chiudiAssenzaForm();
+  renderAssenze();
+  aggiornaHome();
+}
+
+function eliminaAssenza(id) {
+  assenzeList = assenzeList.filter(a => a.id !== id);
+  saveAssenze();
+  renderAssenze();
+  aggiornaHome();
+}
+
+function renderAssenze() {
+  if (!assenzeList.length) {
+    assenzeListEl.innerHTML = '<div class="card-sub">Nessuna assenza registrata.</div>';
+  } else {
+    const ord = [...assenzeList].sort((a,b)=> b.data.localeCompare(a.data));
+    assenzeListEl.innerHTML = ord.map(a => `
+      <div class="pres-item">
+        <div class="pres-info">
+          <div class="pres-data">${formatITA(a.data)}</div>
+          <div class="pres-motivo">${a.motivo || "Nessun motivo inserito"}</div>
+        </div>
+        <div class="pres-actions">
+          <button type="button" onclick="eliminaAssenza('${a.id}')">✕</button>
+        </div>
+      </div>
+    `).join("");
+  }
+  aggiornaPresenze();
+}
+
+function openRitardoForm(today) {
+  ritardoForm.style.display = "block";
+  ritardoMotivo.value = "";
+  ritardoData.value = today ? todayISO() : "";
+}
+
+function chiudiRitardoForm() {
+  ritardoForm.style.display = "none";
+}
+
+function salvaRitardo() {
+  const data = ritardoData.value;
+  const motivo = ritardoMotivo.value.trim();
+  if (!data) return;
+  ritardiList.push({
+    id: Date.now().toString(),
+    data,
+    motivo
+  });
+  saveRitardi();
+  chiudiRitardoForm();
+  renderRitardi();
+  aggiornaHome();
+}
+
+function eliminaRitardo(id) {
+  ritardiList = ritardiList.filter(r => r.id !== id);
+  saveRitardi();
+  renderRitardi();
+  aggiornaHome();
+}
+
+function renderRitardi() {
+  if (!ritardiList.length) {
+    ritardiListEl.innerHTML = '<div class="card-sub">Nessuna entrata in seconda registrata.</div>';
+  } else {
+    const ord = [...ritardiList].sort((a,b)=> b.data.localeCompare(a.data));
+    ritardiListEl.innerHTML = ord.map(r => `
+      <div class="pres-item">
+        <div class="pres-info">
+          <div class="pres-data">${formatITA(r.data)}</div>
+          <div class="pres-motivo">${r.motivo || "Nessun motivo inserito"}</div>
+        </div>
+        <div class="pres-actions">
+          <button type="button" onclick="eliminaRitardo('${r.id}')">✕</button>
+        </div>
+      </div>
+    `).join("");
+  }
+  aggiornaPresenze();
+}
+
+function aggiornaPresenze() {
+  const a = assenzeList.length;
+  const r = ritardiList.length;
+  presenzeShow.textContent = `Assenze totali: ${a} | Entrate in seconda: ${r}`;
+}
+
+/* ======= NOTE PRIVATE ======= */
+const note = document.getElementById("note");
+function salvaNote() {
+  localStorage.setItem("note", note.value || "");
+}
+function caricaNote() {
+  note.value = localStorage.getItem("note") || "";
+}
+
+/* ======= HOME DASHBOARD ======= */
+const homeToday = document.getElementById("homeToday");
+const homeInsufficienti = document.getElementById("homeInsufficienti");
+const homeTiles = document.getElementById("homeTiles");
+const todaySummary = document.getElementById("todaySummary");
+
+function mediaLista(lista) {
+  if (!lista.length) return 0;
+  return lista.reduce((a,b)=>a+b,0)/lista.length;
+}
+
+function aggiornaHome() {
+  const oggi = new Date();
+  const giorni = ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"];
+  const mesi = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
+  todaySummary.textContent = `${giorni[oggi.getDay()]} ${oggi.getDate()} ${mesi[oggi.getMonth()]}`;
+
+  const primo = voti.filter(v => v.q === "Primo").map(v => v.v);
+  const secondo = voti.filter(v => v.q === "Secondo").map(v => v.v);
+  const mediaP = mediaLista(primo);
+  const mediaS = mediaLista(secondo);
+  const mediaTot = mediaLista(voti.map(v=>v.v));
+
+  const a = assenzeList.length;
+  const r = ritardiList.length;
+
+  homeTiles.innerHTML = `
+    <div class="home-tile">
+      <div class="voto-info">Media 1º</div>
+      <div style="font-weight:700;">${mediaP ? mediaP.toFixed(1) + "/30" : "--"}</div>
+    </div>
+    <div class="home-tile">
+      <div class="voto-info">Media 2º</div>
+      <div style="font-weight:700;">${mediaS ? mediaS.toFixed(1) + "/30" : "--"}</div>
+    </div>
+    <div class="home-tile">
+      <div class="voto-info">Media totale</div>
+      <div style="font-weight:700;">${mediaTot ? mediaTot.toFixed(1) + "/30" : "--"}</div>
+    </div>
+    <div class="home-tile">
+      <div class="voto-info">Voti totali</div>
+      <div style="font-weight:700;">${voti.length}</div>
+    </div>
+    <div class="home-tile">
+      <div class="voto-info">Assenze</div>
+      <div style="font-weight:700;">${a}</div>
+    </div>
+    <div class="home-tile">
+      <div class="voto-info">Entrate 2ª ora</div>
+      <div style="font-weight:700;">${r}</div>
+    </div>
+  `;
+
+  if (voti.length === 0) {
+    homeToday.innerHTML = '<div class="card-sub">Ancora nessun voto inserito. Inizia dalla sezione "Voti".</div>';
+  } else {
+    const ultimi = [...voti].slice(-5).reverse();
+    homeToday.innerHTML = ultimi.map(v => {
+      const qLabel = v.q === "Primo" ? "1º" : "2º";
+      const insuff = v.v < 18;
+      return `<div class="voto-info">
+        <strong>${v.m}</strong> → <span style="color:${insuff ? 'var(--danger)' : 'inherit'}">${v.v}/30</span> (${qLabel})
+      </div>`;
+    }).join("");
+  }
+
+  const insufficienti = voti.filter(v => v.v < 18);
+  if (!insufficienti.length) {
+    homeInsufficienti.innerHTML = '<div class="card-sub">Nessun voto insufficiente al momento. Continua così 💪</div>';
+  } else {
+    homeInsufficienti.innerHTML = insufficienti.map(v => {
+      const qLabel = v.q === "Primo" ? "1º" : "2º";
+      return `<div class="voto-info"><strong>${v.m}</strong> → <span style="color:var(--danger); font-weight:600;">${v.v}/30</span> (${qLabel})</div>`;
+    }).join("");
+  }
+}
+
+/* ======= PIN / LOCK ======= */
+const lockScreen = document.getElementById("lockScreen");
+const lockTitle = document.getElementById("lockTitle");
+const lockSub = document.getElementById("lockSub");
+const lockBtn = document.getElementById("lockBtn");
+const lockError = document.getElementById("lockError");
+const pinInput = document.getElementById("pinInput");
+
+let storedPin = localStorage.getItem("schoolhub_pin") || "";
+
+function setupLock() {
+  storedPin = localStorage.getItem("schoolhub_pin") || "";
+  if (!storedPin) {
+    lockTitle.textContent = "Imposta un PIN";
+    lockSub.textContent = "Scegli un PIN (4-8 cifre) per proteggere l’accesso.";
+    lockBtn.textContent = "Salva PIN e entra";
+    lockBtn.onclick = creaPIN;
+  } else {
+    lockTitle.textContent = "Inserisci PIN";
+    lockSub.textContent = "Metti il PIN che hai impostato per aprire SchoolHub.";
+    lockBtn.textContent = "Sblocca";
+    lockBtn.onclick = controllaPIN;
+  }
+  lockError.textContent = "";
+  pinInput.value = "";
+}
+
+function creaPIN() {
+  const val = pinInput.value.trim();
+  if (val.length < 4 || val.length > 8 || !/^[0-9]+$/.test(val)) {
+    lockError.textContent = "Il PIN deve avere 4-8 cifre numeriche.";
+    return;
+  }
+  localStorage.setItem("schoolhub_pin", val);
+  lockScreen.style.display = "none";
+}
+
+function controllaPIN() {
+  const val = pinInput.value.trim();
+  if (val === storedPin) {
+    lockScreen.style.display = "none";
+  } else {
+    lockError.textContent = "PIN sbagliato.";
+  }
+}
+
+function saltaPIN() {
+  lockScreen.style.display = "none";
+}
+
+/* ======= INIT ======= */
+function init() {
+  applicaTema();
+  aggiornaMaterieUI();
+  caricaNote();
+  aggiornaVoti();
+  aggiornaMedie();
+  renderAssenze();
+  renderRitardi();
+  aggiornaHome();
+  setupLock();
+}
+
+init();
+</script>
+</body>
+</html>
