@@ -547,7 +547,7 @@ body.dark .pres-item {
   </div>
 
   <div class="card">
-    <div class="card-title">Voti sotto la sufficienza</div>
+    <div class="card-title">Insufficenze</div>
     <div id="homeInsufficienti"></div>
   </div>
 </div>
@@ -647,11 +647,11 @@ body.dark .pres-item {
 <!-- INFO / NOTE PRIVATE -->
 <div id="info" class="page">
   <div class="card">
-    <div class="card-title">Note personali</div>
+    <div class="card-title">Note</div>
     <div class="card-sub">
-      Appunti privati solo per te, salvati in locale sul dispositivo.
+      Scrivi qualunque cosa, resterà qua e lo vedrai solo te.
     </div>
-    <textarea id="note" rows="6" placeholder="Scrivi qui le tue note, promemoria, obiettivi, ecc."></textarea>
+    <textarea id="note" rows="6" placeholder="Scrivi qui!"></textarea>
     <button type="button" onclick="salvaNote()" style="margin-top:8px;">Salva note</button>
   </div>
 </div>
@@ -735,7 +735,7 @@ function show(id, btn) {
   if (btn) btn.classList.add("active");
 
   const pageSubtitle = document.getElementById("pageSubtitle");
-  if (id === "home") pageSubtitle.textContent = "Riepilogo stile registro";
+  if (id === "home") pageSubtitle.textContent = "Come stai andando a scuola";
   if (id === "voti") pageSubtitle.textContent = "Gestisci voti e materie";
   if (id === "medie") pageSubtitle.textContent = "Medie per materia e per quadrimestre";
   if (id === "presenze") pageSubtitle.textContent = "Assenze e entrate in seconda";
@@ -1230,3 +1230,4 @@ init();
 </script>
 </body>
 </html>
+
